@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLOSET — 音楽から、服に出会う。</title>
+<meta name="description" content="好きな音楽の感性から、あなたに似合うファッションアイテムを提案するアプリ。">
+<meta property="og:title" content="FLOSET — 音楽から、服に出会う。">
+<meta property="og:description" content="好きな音楽の感性から、あなたに似合うファッションアイテムを提案するアプリ。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+@font-face {
+  font-family: "Aileron";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/fontsource/fonts/aileron@latest/latin-900-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Aileron";
+  font-style: italic;
+  font-weight: 900;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/fontsource/fonts/aileron@latest/latin-900-italic.woff2") format("woff2");
+}
+/* ============================================================
+   FLOSET — Landing Page (responsive: mobile + desktop)
+   Design: Claude Design / FLOSET LP.html
+   ============================================================ */
+
+:root {
+  --beige:      #efe5da;
+  --beige-deep: #e7dccd;
+  --card:       #f8f4ec;
+  --card-line:  #e6ddd0;
+  --blue:       #0e26ee;
+  --blue-deep:  #0536f4;
+  --blue-ink:   #0a1fb8;
+  --ink:        #14110f;
+  --ink-soft:   #2c2a27;
+  --green:      #0aa436;
+  --green-dark: #088a2c;
+  --amber:      #ffca03;
+
+  --maxw: 1180px;
+  --gut: clamp(20px, 5vw, 64px);
+  --radius: 24px;
+
+  --jp:      "Noto Sans JP", system-ui, sans-serif;
+  --display: "Archivo", "Noto Sans JP", system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+body {
+  font-family: var(--jp);
+  background: var(--beige);
+  color: var(--ink);
+  line-height: 1.75;
+  font-weight: 500;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, video, svg { display: block; max-width: 100%; height: auto; }
+section { max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: 0; background: none; }
+
+.wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gut); }
+
+/* ---------- logo ---------- */
+.logo {
+  display: inline-flex;
+  align-items: center;
+}
+.logo-img { height: 32px; width: auto; display: block; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-head {
+  position: fixed; inset: 0 0 auto 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px var(--gut);
+  transition: background .3s ease, box-shadow .3s ease;
+}
+.site-head.solid {
+  background: rgba(239, 229, 218, .92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 rgba(20, 17, 15, .06);
+}
+
+.nav-desktop { display: none; align-items: center; gap: 34px; }
+.nav-desktop a {
+  font-size: 14px; font-weight: 700; letter-spacing: .02em; color: var(--ink-soft);
+  position: relative; padding-bottom: 3px; transition: color .2s;
+}
+.nav-desktop a::after {
+  content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+  background: var(--blue); transition: width .25s;
+}
+.nav-desktop a:hover { color: var(--blue); }
+.nav-desktop a:hover::after { width: 100%; }
+
+.nav-cta {
+  background: var(--green); color: #fff; font-weight: 700; font-size: 14px;
+  padding: 11px 22px; border-radius: 999px; transition: transform .15s, background .2s;
+}
+.nav-cta:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+.burger {
+  width: 46px; height: 46px; border-radius: 50%; background: #fff;
+  display: grid; place-content: center; gap: 5px;
+  box-shadow: 0 4px 14px rgba(20, 17, 15, .12);
+}
+.burger span { display: block; width: 20px; height: 2.4px; background: var(--ink); border-radius: 2px; transition: .3s; }
+.menu-open .burger span:nth-child(1) { transform: translateY(7.4px) rotate(45deg); }
+.menu-open .burger span:nth-child(2) { opacity: 0; }
+.menu-open .burger span:nth-child(3) { transform: translateY(-7.4px) rotate(-45deg); }
+
+/* mobile menu overlay */
+.nav-mobile {
+  position: fixed; inset: 0; z-index: 55;
+  background: var(--blue-deep);
+  display: flex; flex-direction: column; justify-content: center; gap: 6px;
+  padding: 0 var(--gut);
+  opacity: 0; visibility: hidden; transform: translateY(-12px);
+  transition: opacity .3s, transform .3s, visibility .3s;
+}
+.menu-open .nav-mobile { opacity: 1; visibility: visible; transform: none; }
+.nav-mobile a {
+  color: #fff; font-family: var(--display); font-style: italic; font-weight: 800;
+  font-size: 34px; letter-spacing: -.01em; padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .18);
+}
+.nav-mobile a small {
+  display: block; font-family: var(--jp); font-style: normal;
+  font-weight: 500; font-size: 13px; opacity: .8; letter-spacing: .04em;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero { padding-top: 120px; text-align: center; position: relative; }
+.hero .eyebrow {
+  color: var(--blue); font-weight: 700; font-size: clamp(15px, 2.4vw, 20px);
+  letter-spacing: .01em; margin-bottom: .5em;
+}
+.hero h1 {
+  font-weight: 900; font-size: clamp(30px, 7vw, 62px); line-height: 1.28;
+  letter-spacing: -.01em; color: var(--ink); text-wrap: balance;
+}
+.hero-phones {
+  margin: clamp(24px, 5vw, 46px) auto -2px;
+  max-width: 1040px; width: 100%;
+  filter: drop-shadow(0 30px 50px rgba(20, 17, 15, .18));
+}
+
+/* blue wave CTA band */
+.hero-cta { position: relative; background: var(--blue-deep); color: #fff; padding-bottom: clamp(40px, 6vw, 72px); }
+.wave-top { display: block; width: 100%; height: auto; margin-top: -1px; fill: var(--blue-deep); position: relative; }
+.hero-cta .inner { max-width: 680px; margin-inline: auto; padding-inline: var(--gut); margin-top: -2px; }
+
+.dig-line {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  font-weight: 700; font-size: clamp(16px, 2.6vw, 22px); margin-bottom: 22px; color: #fff;
+}
+.dig-slash { height: 1.6em; width: auto; filter: brightness(0) invert(1); opacity: .9; flex-shrink: 0; }
+.dig-line .dig { font-family: var(--display); font-style: italic; font-weight: 800; }
+
+.btn-green {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; background: var(--green); color: #fff;
+  font-weight: 800; font-size: clamp(20px, 3.4vw, 26px); letter-spacing: .04em;
+  padding: 22px; border-radius: 999px;
+  box-shadow: 0 12px 26px rgba(8, 80, 26, .35);
+  transition: transform .15s, background .2s;
+}
+.btn-green:hover { background: var(--green-dark); transform: translateY(-2px); }
+
+.btn-dark {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  width: 100%; margin-top: 14px; background: #0c0b0a; color: #fff;
+  font-weight: 700; font-size: clamp(15px, 2.4vw, 18px);
+  padding: 17px; border-radius: 999px; transition: transform .15s, opacity .2s;
+}
+.btn-dark:hover { transform: translateY(-2px); opacity: .92; }
+.btn-dark svg { width: 22px; height: 22px; }
+
+/* ============================================================
+   SECTION SHELL / shared heads
+   ============================================================ */
+.section { padding-block: clamp(64px, 9vw, 120px); position: relative; }
+
+.eyebrow {
+  font-family: var(--display); font-weight: 800; font-style: normal;
+  color: var(--blue); font-size: clamp(15px, 2.4vw, 20px);
+  letter-spacing: .02em; margin-bottom: .5em;
+}
+.display {
+  font-family: var(--display); font-weight: 900; color: var(--blue);
+  line-height: .92; letter-spacing: -.015em;
+  font-size: clamp(56px, 12vw, 140px);
+}
+.lead {
+  font-size: clamp(15px, 2.3vw, 19px); line-height: 2; color: var(--ink-soft);
+  font-weight: 500; max-width: 40ch; text-wrap: pretty;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about { text-align: center; }
+.about .display { margin: .06em 0 .55em; }
+.about .lead { margin-inline: auto; }
+
+.about-scroll-wrap {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: clamp(28px, 5vw, 52px);
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  border-radius: 16px;
+}
+.about-scroll-wrap:active { cursor: grabbing; }
+.about-scroll-wrap::-webkit-scrollbar { display: none; }
+
+.about-phones-strip {
+  height: clamp(260px, 38vw, 440px);
+  width: auto;
+  display: block;
+  max-width: none;
+}
+/* ============================================================
+   FEATURES (accordion)
+   ============================================================ */
+.features { background: var(--beige-deep); }
+.acc { display: flex; flex-direction: column; gap: 18px; max-width: 960px; margin-inline: auto; }
+
+.acc-item {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(20, 17, 15, .05);
+  overflow: hidden; transition: box-shadow .3s;
+}
+.acc-item.open { box-shadow: 0 18px 46px rgba(20, 17, 15, .10); }
+
+.acc-head {
+  width: 100%; display: flex; align-items: center; gap: 18px;
+  padding: clamp(22px, 3.4vw, 34px) clamp(22px, 3.4vw, 40px); text-align: left;
+}
+.acc-head .txt { flex: 1; }
+.acc-head .kicker {
+  display: block; color: var(--blue); font-weight: 700; font-size: 13px;
+  letter-spacing: .12em; margin-bottom: 6px;
+}
+.acc-head h3 {
+  font-weight: 900; font-size: clamp(20px, 3.4vw, 30px);
+  letter-spacing: -.01em; color: var(--ink); line-height: 1.3;
+}
+
+.chev {
+  flex: none; width: clamp(44px, 6vw, 56px); height: clamp(44px, 6vw, 56px);
+  border-radius: 50%; background: #ece4d6; display: grid; place-content: center;
+  transition: background .25s, transform .35s;
+}
+.chev svg { width: 22px; height: 22px; stroke: var(--ink); stroke-width: 2.4; fill: none; }
+.acc-item.open .chev { background: var(--blue); transform: rotate(180deg); }
+.acc-item.open .chev svg { stroke: #fff; }
+
+.acc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; }
+.acc-body > div { overflow: hidden; }
+.acc-item.open .acc-body { grid-template-rows: 1fr; }
+
+.acc-inner {
+  padding: 0 clamp(22px, 3.4vw, 40px) clamp(28px, 4vw, 40px);
+  border-top: 1px dashed var(--card-line); margin-top: -1px;
+}
+.acc-inner .pt { padding-top: clamp(20px, 3vw, 30px); }
+
+.feat-copy p { font-size: clamp(14.5px, 2vw, 17px); line-height: 1.95; color: var(--ink-soft); margin-bottom: 1.15em; }
+.feat-copy p:last-child { margin-bottom: 0; }
+.feat-media { width: 100%; border-radius: 18px; overflow: hidden; }
+.feat-media img { width: 100%; }
+
+/* ============================================================
+   HOW TO USE
+   ============================================================ */
+.howto { position: relative; background: var(--beige); padding-block: 0; }
+.howto .pad { padding-block: clamp(70px, 9vw, 120px); }
+.howto-head { display: flex; flex-direction: column; }
+.howto .display { margin: .04em 0 .5em; font-style: italic; letter-spacing: -.02em; }
+.howto .lead { max-width: 52ch; }
+
+.steps { display: flex; flex-direction: column; gap: clamp(48px, 7vw, 84px); margin-top: clamp(48px, 7vw, 80px); }
+.step { display: grid; gap: clamp(20px, 3vw, 40px); align-items: center; }
+.step-media { border-radius: 20px; overflow: hidden; box-shadow: 0 18px 40px rgba(20, 17, 15, .14); }
+.step-media img { width: 100%; }
+.step-num {
+  font-family: var(--display); font-style: italic; font-weight: 900;
+  color: var(--blue); font-size: clamp(46px, 7vw, 76px); line-height: .8; margin-bottom: 14px;
+}
+.step-label {
+  display: inline-block; background: #0c0b0a; color: #fff; font-weight: 800;
+  font-size: clamp(16px, 2.4vw, 21px); padding: 11px 24px; border-radius: 999px; margin-bottom: 18px;
+}
+.step-desc { font-size: clamp(14.5px, 2vw, 17px); line-height: 1.95; color: var(--ink-soft); }
+
+/* ============================================================
+   FINAL CTA + footer
+   ============================================================ */
+.final { background: var(--beige); color: var(--ink); position: relative; padding: 0; }
+
+.final-beige {
+  padding: clamp(52px, 8vw, 80px) var(--gut) 0;
+  text-align: center;
+  position: relative; z-index: 2;
+}
+.final-beige .final-head { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.final-beige .logo-img { height: clamp(36px, 7vw, 64px); width: auto; margin-bottom: 10px; }
+.final-beige .eyebrow { margin: 0 0 6px; }
+.final-beige h2 {
+  font-weight: 900; font-size: clamp(24px, 4.4vw, 42px); line-height: 1.45;
+  color: #111; text-wrap: balance; margin: 10px 0 0;
+}
+
+.final-phone {
+  max-width: 300px; width: 70%;
+  display: block; margin: clamp(24px, 4vw, 36px) auto -60px;
+  position: relative; z-index: 3;
+  filter: drop-shadow(0 24px 44px rgba(0, 0, 20, .32));
+}
+
+.final-blue {
+  background: #0536f4;
+  color: #fff;
+  position: relative;
+  padding: 80px var(--gut) 0;
+  text-align: center;
+  z-index: 1;
+  overflow-x: clip;
+}
+.final-blue::before {
+  content: '';
+  position: absolute;
+  left: -8%; right: -8%;
+  top: -72px;
+  height: 144px;
+  background: #0536f4;
+  border-radius: 50%;
+  z-index: 0;
+}
+.final-blue > * { position: relative; z-index: 1; }
+.final-blue .dig-line { color: #fff; margin-bottom: 28px; padding-top: 8px; }
+
+.cta-block { max-width: 560px; margin-inline: auto; position: relative; }
+
+.btn-black-cta {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; background: #0c0b0a; color: #fff; font-weight: 900;
+  font-size: clamp(24px, 4vw, 34px); letter-spacing: .05em;
+  padding: 26px; border-radius: 999px;
+  box-shadow: 0 16px 36px rgba(0, 0, 20, .34); transition: transform .15s;
+}
+.btn-black-cta:hover { transform: translateY(-2px); }
+
+.foot {
+  border-top: 1px dashed rgba(255, 255, 255, .45);
+  margin-top: clamp(40px, 6vw, 64px);
+  padding: 28px var(--gut) clamp(40px, 6vw, 64px);
+  text-align: center;
+}
+.foot-links { display: flex; flex-wrap: wrap; gap: 10px 26px; justify-content: center; font-size: 13.5px; }
+.foot-links a { color: #dfe4ff; }
+.foot-links a:hover { color: #fff; text-decoration: underline; }
+.copy { margin-top: 18px; font-size: 12.5px; color: #b9c2ff; letter-spacing: .04em; }
+
+/* ============================================================
+   REVEAL animation
+   ============================================================ */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+@media print { .reveal { opacity: 1 !important; transform: none !important; } }
+
+/* ============================================================
+   DESKTOP
+   ============================================================ */
+@media (min-width: 768px) {
+  .step { grid-template-columns: 1fr 1fr; }
+  .step:nth-child(even) .step-media { order: 2; }
+}
+
+@media (min-width: 1000px) {
+  .burger { display: none; }
+  .nav-desktop { display: flex; }
+
+  .hero { padding-top: 148px; }
+
+  /* ABOUT two-column */
+  .about { text-align: left; }
+  .about .wrap { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 56px; align-items: center; }
+  .about .lead { margin-inline: 0; }
+  .about-scroll-wrap { margin-top: 0; }
+  .about-phones-strip { height: clamp(380px, 42vw, 500px); }
+  .about .about-head { align-self: center; }
+
+  /* features: expanded body two-column */
+  .acc-inner .pt { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center; }
+  .feat-media { align-self: center; }
+
+  /* final */
+  .final-beige { max-width: 680px; margin-inline: auto; padding-inline: var(--gut); }
+  .final-phone { max-width: 340px; margin-bottom: -70px; }
+  .final-blue { padding-top: 100px; }
+  .final-blue::before { top: -80px; height: 160px; }
+}
+
+@media (min-width: 1280px) {
+  .acc-inner .pt { gap: 60px; }
+}
+
+/* ============================================================
+   GENRE × STYLE EXPLORER
+   ============================================================ */
+#styles {
+  background: #0a0b14;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: clamp(70px, 9vw, 120px);
+}
+.styles-wave {
+  display: block;
+  width: 100%;
+  height: auto;
+  fill: #0a0b14;
+  position: relative;
+  z-index: 1;
+  margin-bottom: -2px;
+}
+.styles-inner {
+  position: relative;
+  z-index: 2;
+  padding-top: clamp(36px, 5vw, 64px);
+}
+.styles-head {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gut);
+  margin-bottom: 44px;
+}
+.styles-kicker {
+  display: block;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #5b7cff;
+  margin-bottom: 14px;
+}
+.styles-title {
+  font-family: "Aileron", "Noto Sans JP", system-ui, sans-serif;
+  font-weight: 900;
+  font-size: clamp(36px, 7.2vw, 92px);
+  color: #fff;
+  line-height: 1.14;
+  letter-spacing: -.02em;
+}
+.styles-title em {
+  font-style: italic;
+  color: #5b7cff;
+}
+.styles-sub {
+  margin-top: 22px;
+  font-size: clamp(14px, 2vw, 17px);
+  line-height: 1.95;
+  color: rgba(255,255,255,.38);
+  max-width: 42ch;
+}
+.styles-hint {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gut);
+  margin-bottom: 18px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.styles-hint::before, .styles-hint::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,.06);
+}
+
+/* ============ NEWS ============ */
+#news { background: #dfd6cc; position: relative; overflow: hidden; }
+
+/* — ticker — */
+.news-ticker-rail {
+  background: #0D6DDD;
+  padding: 11px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.news-ticker-track {
+  display: inline-flex;
+  animation: ticker-run 26s linear infinite;
+  will-change: transform;
+}
+.news-ticker-track:hover { animation-play-state: paused; }
+.news-ticker-seg {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.8);
+  padding: 0 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+}
+.ticker-star {
+  width: 6px; height: 6px;
+  background: rgba(255,255,255,.35);
+  clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  flex-shrink: 0;
+}
+@keyframes ticker-run {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* — inner layout — */
+.news-inner {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gut);
+  padding-top: clamp(56px, 7vw, 88px);
+  padding-bottom: clamp(72px, 9vw, 120px);
+}
+.news-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: clamp(32px, 4.5vw, 56px);
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.news-eyebrow {
+  display: block;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #5b7cff;
+  margin-bottom: 10px;
+}
+.news-masthead {
+  font-family: "Aileron", var(--display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(72px, 13vw, 152px);
+  color: #fff;
+  line-height: .82;
+  letter-spacing: -.04em;
+  margin-left: -.03em;
+}
+.news-all-link {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.24);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color .24s;
+  padding-bottom: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.news-all-link:hover { color: rgba(255,255,255,.65); }
+.news-all-link svg { width: 14px; height: 14px; transition: transform .28s cubic-bezier(.16,1,.3,1); }
+.news-all-link:hover svg { transform: translateX(5px); }
+
+/* — list — */
+.news-list { list-style: none; padding: 0; margin: 0; }
+.news-item {
+  display: grid;
+  grid-template-columns: 56px 1fr 28px;
+  align-items: center;
+  gap: 0 28px;
+  padding: 26px 0;
+  border-top: 1px solid rgba(255,255,255,.06);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  transition: padding-left .38s cubic-bezier(.16,1,.3,1);
+}
+.news-item::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--blue-deep);
+  transform: scaleY(0);
+  transform-origin: top;
+  border-radius: 0 2px 2px 0;
+  transition: transform .38s cubic-bezier(.16,1,.3,1);
+}
+.news-item:hover { padding-left: 18px; }
+.news-item:hover::after { transform: scaleY(1); }
+.news-list > li:last-child .news-item { border-bottom: 1px solid rgba(255,255,255,.06); }
+
+.news-idx {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,.1);
+  align-self: start;
+  padding-top: 3px;
+  user-select: none;
+}
+.news-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+  flex-wrap: wrap;
+}
+.news-cat {
+  display: inline-block;
+  padding: 3px 9px 2px;
+  border-radius: 100px;
+  font-family: var(--display);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+}
+.cat-event   { background: #e85f0a; }
+.cat-release { background: var(--blue-deep); }
+.cat-update  { background: var(--green); }
+.cat-info    { background: #6c3fc7; }
+.news-date {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: rgba(255,255,255,.2);
+}
+.news-headline {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(16px, 2.2vw, 22px);
+  color: rgba(255,255,255,.86);
+  line-height: 1.3;
+  letter-spacing: -.01em;
+  transition: color .22s;
+}
+.news-item:hover .news-headline { color: #fff; }
+.news-desc {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.9;
+  color: rgba(255,255,255,.28);
+  max-width: 58ch;
+}
+.news-arrow {
+  color: rgba(255,255,255,.12);
+  align-self: center;
+  flex-shrink: 0;
+  transition: color .22s, transform .35s cubic-bezier(.16,1,.3,1);
+}
+.news-arrow svg { width: 18px; height: 18px; display: block; }
+.news-item:hover .news-arrow { color: rgba(255,255,255,.45); transform: translate(5px, -3px); }
+
+@media (max-width: 640px) {
+  .news-item { grid-template-columns: 38px 1fr; gap: 0 14px; }
+  .news-arrow { display: none; }
+  .news-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .news-all-link { padding-bottom: 0; }
+}
+
+/* news gallery iframe */
+.news-gallery-wrap { width: 100%; }
+.news-gallery-iframe {
+  width: 100%;
+  height: 620px;
+  border: none;
+  display: block;
+  background: #dfd6cc;
+}
+@media (max-width: 640px) { .news-gallery-iframe { height: 560px; } }
+
+/* 3D gallery iframe */
+.gallery-iframe-wrap {
+  width: 100%;
+  height: 90vh;
+  min-height: 560px;
+  position: relative;
+}
+.gallery-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: #050505;
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE — 375〜480px
+   ============================================================ */
+@media (max-width: 600px) {
+  /* Dig-line: hide decorative slash images (flex-shrink:0 causes overflow) */
+  .dig-slash { display: none; }
+  .dig-line { gap: 8px; flex-wrap: wrap; }
+
+  /* Hero */
+  .hero { padding-top: 100px; }
+
+  /* Display headline: lower minimum to fit "HOW TO USE" italic in 335px */
+  .display { font-size: clamp(36px, 10.5vw, 140px); }
+
+  /* Hero CTA inner */
+  .hero-cta .inner { padding-inline: clamp(16px, 5vw, 48px); }
+
+  /* Buttons */
+  .btn-green {
+    font-size: clamp(17px, 4.8vw, 26px);
+    padding: 18px 16px;
+    letter-spacing: .02em;
+  }
+  .btn-dark {
+    font-size: clamp(14px, 4vw, 18px);
+    padding: 15px 16px;
+  }
+  .btn-black-cta {
+    font-size: clamp(20px, 5.5vw, 34px);
+    padding: 20px 16px;
+    letter-spacing: .02em;
+  }
+
+  /* Accordion: prevent heading overflow */
+  .acc-head { gap: 12px; }
+  .acc-head h3 { font-size: clamp(16px, 4.5vw, 30px); }
+  .chev { width: 40px; height: 40px; flex-shrink: 0; }
+
+  /* How to use */
+  .howto .display { letter-spacing: -.01em; }
+
+  /* Styles section */
+  .styles-head { padding-inline: clamp(16px, 5vw, 48px); }
+  .styles-hint { padding-inline: clamp(16px, 5vw, 48px); }
+  .styles-title { letter-spacing: -.015em; }
+
+  /* Final CTA */
+  .final-beige { padding-inline: clamp(16px, 5vw, 48px); }
+  .final-phone { width: 60%; max-width: 240px; }
+
+  /* Footer links: wrap tightly */
+  .foot-links {
+    gap: 8px 18px;
+    font-size: 12.5px;
+  }
+  .foot-links a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Nav mobile: smaller font to avoid overflow on very small screens */
+  .nav-mobile a { font-size: clamp(24px, 8vw, 34px); }
+}
+
+@media (max-width: 390px) {
+  /* Extra-tight adjustments for 375px / SE */
+  .display { font-size: clamp(32px, 9.5vw, 140px); }
+  .btn-black-cta { font-size: clamp(18px, 5.2vw, 34px); }
+  .foot-links { flex-direction: column; align-items: center; gap: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-head" id="head">
+  <a href="#hero" class="logo" aria-label="FLOSET">
+    <img class="logo-img" src="assets/logo_blue.png" alt="FLOSET">
+  </a>
+  <nav class="nav-desktop" aria-label="メインナビゲーション">
+    <a href="#about">ABOUT</a>
+    <a href="#features">FEATURES</a>
+    <a href="#howto">HOW&nbsp;TO&nbsp;USE</a>
+    <a href="#news">NEWS</a>
+    <a href="https://www.floset.jp/" target="_blank" rel="noopener noreferrer" class="nav-cta">今すぐ使う</a>
+  </nav>
+  <button class="burger" id="burger" aria-label="メニューを開く" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- mobile menu -->
+<nav class="nav-mobile" id="navMobile" aria-label="モバイルメニュー">
+  <a href="#about">ABOUT<small>FLOSETってなに?</small></a>
+  <a href="#features">FEATURES<small>3つの特徴</small></a>
+  <a href="#howto">HOW TO USE<small>使い方はかんたん</small></a>
+  <a href="#news">NEWS<small>最新情報</small></a>
+  <a href="https://www.floset.jp/" target="_blank" rel="noopener noreferrer">DOWNLOAD<small>今すぐ使う</small></a>
+</nav>
+
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero" aria-label="ヒーロー">
+  <div class="wrap">
+    <p class="eyebrow reveal">音楽から、服に出会う。</p>
+    <h1 class="reveal">好きな音楽の感性から、<br>あなたに似合う服と<br>出会えるアプリ。</h1>
+  </div>
+  <img class="hero-phones reveal" src="assets/hero_phones.png" alt="FLOSETアプリ画面 — 服のディグ体験">
+
+  <div class="hero-cta">
+    <svg class="wave-top" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,52 C220,2 430,108 700,66 C940,28 1160,118 1440,46 L1440,130 L0,130 Z"></path>
+    </svg>
+    <div class="inner">
+      <p class="dig-line">
+        <img src="assets/p/dig_slash_l2.png" alt="" class="dig-slash" aria-hidden="true">
+        <span>音楽から<span class="dig">Dig</span>る新しい体験を。</span>
+        <img src="assets/p/dig_slash_r2.png" alt="" class="dig-slash" aria-hidden="true">
+      </p>
+      <a href="https://www.floset.jp/" target="_blank" rel="noopener noreferrer" class="btn-green">今すぐ使う</a>
+      <a href="https://www.instagram.com/floset_official?utm_source=qr" target="_blank" rel="noopener noreferrer" class="btn-dark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ ABOUT ============ -->
+<section class="section about" id="about" aria-label="FLOSETについて">
+  <div class="wrap">
+    <div class="about-head">
+      <p class="eyebrow reveal">FLOSETってなに?</p>
+      <h2 class="display reveal">ABOUT</h2>
+      <p class="lead reveal">FLOSET（フローゼット）は、音楽の感性から、あなたに似合う服と出会えるファッションアプリです。好きな音楽ジャンルや感性をもとに、アイテムを探し、保存し、購入までスムーズに楽しめます。</p>
+    </div>
+    <div class="about-scroll-wrap reveal">
+      <img src="assets/p/about_phones_strip.png" alt="FLOSETアプリの各画面" class="about-phones-strip">
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ FEATURES (accordion) ============ -->
+<section class="section features" id="features" aria-label="3つの特徴">
+  <div class="wrap">
+    <div class="acc">
+
+      <article class="acc-item open">
+        <button class="acc-head" aria-expanded="true" aria-controls="acc-body-1">
+          <span class="txt">
+            <span class="kicker">SENSE MATCH</span>
+            <h3>似た感性の人から見つかる</h3>
+          </span>
+          <span class="chev" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="acc-body" id="acc-body-1">
+          <div>
+            <div class="acc-inner">
+              <div class="pt">
+                <div class="feat-copy">
+                  <p>自分と近い音楽感性を持つ人が、どんな服に惹かれているのか。</p>
+                  <p>FLOSETでは、その傾向をもとに、あなたに合いそうなアイテムを提案します。</p>
+                  <p>自分では選ばなかった服も、似た感性の人の好みを通して見ることで、新しいスタイルとの出会いにつながります。</p>
+                </div>
+                <div class="feat-media">
+                  <img src="assets/sense_graphic.png" alt="似た感性の人が選んだアイテム一覧">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="acc-item">
+        <button class="acc-head" aria-expanded="false" aria-controls="acc-body-2">
+          <span class="txt">
+            <span class="kicker">STYLE SENSE</span>
+            <h3>自分のスタイルが見えてくる</h3>
+          </span>
+          <span class="chev" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="acc-body" id="acc-body-2">
+          <div>
+            <div class="acc-inner">
+              <div class="pt">
+                <div class="feat-copy">
+                  <p>BIBIRUした服や、いつも聴いている音楽から、あなたの好きな空気感が少しずつ見えてきます。</p>
+                  <p>まだ言葉にできなかった好みも、音楽と服のつながりから見つけられます。</p>
+                  <p>好きな音楽を知ることが、自分らしいスタイルを知るきっかけになります。</p>
+                </div>
+                <div class="feat-media">
+                  <img src="assets/style_card.png" alt="あなたのスタイル傾向 — ジャンル分析">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="acc-item">
+        <button class="acc-head" aria-expanded="false" aria-controls="acc-body-3">
+          <span class="txt">
+            <span class="kicker">MUSIC LINK</span>
+            <h3>服から新しい音楽に出会う</h3>
+          </span>
+          <span class="chev" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="acc-body" id="acc-body-3">
+          <div>
+            <div class="acc-inner">
+              <div class="pt">
+                <div class="feat-copy">
+                  <p>気になった服の先には、自分と近い音楽感性を持つ人たちの傾向があります。</p>
+                  <p>服をきっかけに、まだ知らなかったアーティストやジャンル、新しい音楽の空気感に出会えるかもしれません。</p>
+                  <p>ファッションから音楽へ。自分の知らない音楽の世界が、少しずつ広がっていきます。</p>
+                </div>
+                <div class="feat-media">
+                  <img src="assets/music_graphic.png" alt="あなたに近いアーティストと音楽ジャンル傾向">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ HOW TO USE ============ -->
+<section class="howto" id="howto" aria-label="使い方">
+  <svg class="wave-top" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true" style="fill:var(--beige); transform:rotate(180deg);">
+    <path d="M0,52 C220,2 430,108 700,66 C940,28 1160,118 1440,46 L1440,130 L0,130 Z"></path>
+  </svg>
+  <div class="pad">
+    <div class="wrap">
+      <div class="howto-head">
+        <p class="eyebrow reveal">使い方はかんたん！</p>
+        <h2 class="display reveal">HOW TO USE</h2>
+        <p class="lead reveal">FLOSETは、好みの音楽ジャンルやアーティストを登録して、気になる服に出会うだけ。登録して、Digして、BIBIRUする。あなたの感性に近い服が、自然に見つかります。</p>
+      </div>
+
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-media">
+            <img src="assets/p/howto1_new.png" alt="好きな音楽を登録する画面">
+          </div>
+          <div class="step-text">
+            <div class="step-num">01</div>
+            <span class="step-label">好きな音楽を登録</span>
+            <p class="step-desc">アーティスト名や音楽ジャンルを登録して、あなたの音楽感性を登録します。いつも聴いている音楽から、似合うスタイルを見つける準備がはじまります。</p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-media">
+            <img src="assets/p/howto2_new.png" alt="気になる服にBIBIRUする画面">
+          </div>
+          <div class="step-text">
+            <div class="step-num">02</div>
+            <span class="step-label">気になる服にBIBIRU</span>
+            <p class="step-desc">気になった服にBIBIRUするほど、あなたの好みやスタイルの傾向が少しずつ見えてきます。さらに、似た音楽感性を持つ人の傾向から、新しい服や音楽の出会いが広がります。</p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-media">
+            <img src="assets/p/howto3_new.png" alt="探して、そのまま買える画面">
+          </div>
+          <div class="step-text">
+            <div class="step-num">03</div>
+            <span class="step-label">探して、そのまま買える</span>
+            <p class="step-desc">音楽ジャンルや気分に合わせて、気になるアイテムを探せます。気に入った服は、そのまま購入ページへ進めます。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ GENRE × STYLE EXPLORER ============ -->
+<section id="styles" aria-label="音楽ごとのスタイル">
+  <!-- wave: beige → dark -->
+  <svg class="styles-wave" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,52 C220,2 430,108 700,66 C940,28 1160,118 1440,46 L1440,130 L0,130 Z"/>
+  </svg>
+
+  <div class="styles-inner">
+    <div class="styles-head reveal">
+      <span class="styles-kicker">Genre × Style</span>
+      <h2 class="styles-title">音楽ごとの<br><em>スタイル</em>がある。</h2>
+      <p class="styles-sub">聴いている音楽が違えば、惹かれる服も違う。<br>ジャンルの空気感から、あなたのスタイルを見つけよう。</p>
+    </div>
+    <div class="gallery-iframe-wrap">
+      <iframe
+        src="/gallery"
+        class="gallery-iframe"
+        title="3Dスタイルギャラリー — 音楽ごとのスタイル"
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ NEWS ============ -->
+<section id="news" aria-label="ニュース">
+
+  <!-- looping ticker -->
+  <div class="news-ticker-rail" aria-hidden="true">
+    <div class="news-ticker-track">
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <!-- duplicate for seamless loop -->
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+      <span class="news-ticker-seg">FLOSET NEWS<span class="ticker-star"></span></span>
+    </div>
+  </div>
+
+  <div class="news-gallery-wrap">
+    <iframe
+      src="/news"
+      class="news-gallery-iframe"
+      title="FLOSETニュースギャラリー"
+      loading="lazy"
+    ></iframe>
+  </div>
+</section>
+
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final" id="download" aria-label="ダウンロード">
+  <div class="final-beige">
+    <div class="final-head">
+      <img class="logo-img" src="assets/logo_blue.png" alt="FLOSET">
+      <p class="eyebrow reveal" style="color:#0536f4;">音楽から、服に出会う。</p>
+      <h2 class="reveal" style="color:#111;">好きな音楽の感性から、<br>あなたに似合う服と出会えるアプリ。</h2>
+    </div>
+    <img class="final-phone reveal" src="assets/final_phone.png" alt="FLOSETアプリ画面">
+  </div>
+
+  <div class="final-blue">
+    <p class="dig-line">
+      <img src="assets/p/dig_slash_l2.png" alt="" class="dig-slash" aria-hidden="true">
+      <span>音楽から<span class="dig">Dig</span>る新しい体験を。</span>
+      <img src="assets/p/dig_slash_r2.png" alt="" class="dig-slash" aria-hidden="true">
+    </p>
+    <div class="cta-block reveal">
+      <a href="https://www.floset.jp/" target="_blank" rel="noopener noreferrer" class="btn-black-cta">今すぐ使う</a>
+    </div>
+    <div class="foot">
+      <div class="foot-links">
+        <a href="terms.html">利用規約</a>
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="tokushoho.html">特定商取引法に基づく表記</a>
+        <a href="contact.html">お問い合わせ</a>
+      </div>
+      <p class="copy">© FLOSET All Rights Reserved.</p>
+    </div>
+  </div>
+</section>
+
+
+<script>
+/* ---- header solid on scroll ---- */
+const head = document.getElementById('head');
+const onScroll = () => head.classList.toggle('solid', window.scrollY > 40);
+onScroll();
+window.addEventListener('scroll', onScroll, { passive: true });
+
+/* ---- mobile menu ---- */
+const burger = document.getElementById('burger');
+burger.addEventListener('click', () => {
+  const open = document.body.classList.toggle('menu-open');
+  burger.setAttribute('aria-expanded', String(open));
+});
+document.querySelectorAll('.nav-mobile a').forEach(a =>
+  a.addEventListener('click', () => {
+    document.body.classList.remove('menu-open');
+    burger.setAttribute('aria-expanded', 'false');
+  })
+);
+
+/* ---- accordion ---- */
+document.querySelectorAll('.acc-item').forEach(item => {
+  const btn = item.querySelector('.acc-head');
+  btn.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.acc-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.acc-head').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+/* ---- reveal on scroll ---- */
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+}
+
+/* ---- gallery iframe: pass scroll to parent at zoom limits ---- */
+const galleryIframe = document.querySelector('.gallery-iframe');
+if (galleryIframe) {
+  window.addEventListener('message', (e) => {
+    if (e.source !== galleryIframe.contentWindow) return;
+    if (!e.data || e.data.type !== 'gallery-scroll-pass') return;
+    window.scrollBy({ top: e.data.deltaY, behavior: 'auto' });
+  });
+}
+
+/* ---- drag-to-scroll for about strip ---- */
+const strip = document.querySelector('.about-scroll-wrap');
+if (strip) {
+  let isDown = false, startX, scrollLeft;
+  strip.addEventListener('mousedown', e => {
+    isDown = true;
+    startX = e.pageX - strip.offsetLeft;
+    scrollLeft = strip.scrollLeft;
+  });
+  strip.addEventListener('mouseleave', () => isDown = false);
+  strip.addEventListener('mouseup', () => isDown = false);
+  strip.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - strip.offsetLeft;
+    strip.scrollLeft = scrollLeft - (x - startX) * 1.2;
+  });
+}
+</script>
+</body>
+</html>

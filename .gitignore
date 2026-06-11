@@ -26,13 +26,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# synced static copies (generated before build)
-floset-app/public/index.html
-floset-app/public/terms.html
-floset-app/public/privacy.html
-floset-app/public/contact.html
-floset-app/public/tokushoho.html
-floset-app/public/assets/
-
 # source image duplicates (not used in site)
 差し込み①/
+.vercel
