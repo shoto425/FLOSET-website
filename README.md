@@ -30,11 +30,43 @@ npm run start
 
 `http://localhost:3000` で LP・ギャラリー・ニュースが一体で動作します。
 
+## GitHub へのプッシュ
+
+```bash
+# GitHub CLI でログイン（初回のみ）
+gh auth login
+
+# リポジトリ作成 & プッシュ
+cd /path/to/FLOSET_website
+gh repo create FLOSET-website --public --source=. --remote=origin --push
+```
+
+LP を更新したら、同期スクリプトを実行してからコミットしてください。
+
+```bash
+node scripts/sync-public.mjs
+git add .
+git commit -m "Update site"
+git push
+```
+
 ## Vercel デプロイ
 
-1. このリポジトリを GitHub にプッシュ
-2. [Vercel](https://vercel.com) で「Import Project」→ リポジトリを選択
-3. Framework Preset: **Next.js**（`vercel.json` がビルドを設定）
-4. Deploy
+**本番 URL:** https://floset-app.vercel.app
 
-`vercel.json` がビルド前に静的ファイルを `floset-app/public/` へ同期します。
+### CLI からデプロイ
+
+```bash
+cd floset-app
+npx vercel --prod --scope shoto425oshiro-9402s-projects
+```
+
+### GitHub 連携（推奨）
+
+1. GitHub にリポジトリをプッシュ
+2. [Vercel Dashboard](https://vercel.com) → Import Project
+3. **Root Directory** を `floset-app` に設定
+4. Framework: Next.js（デフォルトのまま）
+5. Deploy
+
+以降は `main` ブランチへの push で自動デプロイされます。
