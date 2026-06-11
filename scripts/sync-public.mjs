@@ -5,17 +5,19 @@ import { fileURLToPath } from "node:url"
 const root = join(dirname(fileURLToPath(import.meta.url)), "..")
 const publicDir = join(root, "floset-app", "public")
 
-const htmlFiles = [
+const staticFiles = [
   "index.html",
   "terms.html",
   "privacy.html",
   "contact.html",
   "tokushoho.html",
+  "robots.txt",
+  "sitemap.xml",
 ]
 
 mkdirSync(publicDir, { recursive: true })
 
-for (const file of htmlFiles) {
+for (const file of staticFiles) {
   cpSync(join(root, file), join(publicDir, file))
 }
 
