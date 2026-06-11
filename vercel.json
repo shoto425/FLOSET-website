@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "installCommand": "cd floset-app && npm install",
-  "buildCommand": "node scripts/sync-public.mjs && cd floset-app && npm run build",
-  "outputDirectory": "floset-app/.next"
+  "rootDirectory": "floset-app",
+  "installCommand": "npm install",
+  "buildCommand": "node ../scripts/sync-public.mjs && npm run build"
 }
