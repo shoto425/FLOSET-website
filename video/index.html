@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLOSET — App Introduction Video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --blue: #3B5BFA;
+    --blue-light: #6680FF;
+    --white: #FFFFFF;
+    --black: #000000;
+    --duration: 18s; /* total animation duration */
+  }
+
+  body {
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+  }
+
+  /* ── Controls ── */
+  #controls {
+    display: flex; gap: 12px; margin-bottom: 16px; align-items: center;
+  }
+  #controls button {
+    background: var(--blue); color: #fff;
+    border: none; border-radius: 6px;
+    padding: 8px 20px; font-size: 13px; font-weight: 700;
+    cursor: pointer; letter-spacing: 1px;
+    transition: background 0.2s;
+  }
+  #controls button:hover { background: #2a48e8; }
+  #controls span { color: #888; font-size: 12px; }
+
+  /* ── Stage ── */
+  #stage-wrapper {
+    width: min(100vw, 960px);
+    aspect-ratio: 16 / 9;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 0 60px rgba(59, 91, 250, 0.2);
+  }
+
+  #stage {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: #000;
+    overflow: hidden;
+  }
+
+  /* ── Scene base ── */
+  .scene {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ── Background image fill ── */
+  .scene-bg {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* ── Overlay gradient ── */
+  .scene-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.55) 0%, transparent 60%);
+  }
+
+  /* ── Text block ── */
+  .scene-text {
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 42%;
+  }
+  .scene-text h2 {
+    font-size: clamp(18px, 3.2vw, 42px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.25;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    opacity: 0;
+  }
+  .scene-text p {
+    font-size: clamp(11px, 1.4vw, 18px);
+    color: rgba(255,255,255,0.8);
+    margin-top: 12px;
+    line-height: 1.7;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+    opacity: 0;
+  }
+
+  /* ── Particle dots (decorative) ── */
+  .dots-bg {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(59,91,250,0.3) 1px, transparent 1px);
+    background-size: 32px 32px;
+    opacity: 0.4;
+  }
+
+  /* ── Blue accent corner ── */
+  .accent-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--blue);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  /* ═══════════════════════════════════════
+     SCENE 0 — Logo intro
+  ═══════════════════════════════════════ */
+  #scene-logo {
+    background: #000;
+    animation: scene-logo-anim var(--duration) linear forwards;
+  }
+  @keyframes scene-logo-anim {
+    0%   { opacity: 0; }
+    1%   { opacity: 1; }
+    11%  { opacity: 1; }
+    13%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  #logo-main {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px;
+  }
+  #logo-img {
+    width: min(38%, 320px);
+    opacity: 0;
+    animation: logo-img-anim var(--duration) linear forwards;
+    filter: drop-shadow(0 0 40px rgba(59,91,250,0.6));
+  }
+  @keyframes logo-img-anim {
+    0%   { opacity: 0; transform: scale(0.85); }
+    3%   { opacity: 1; transform: scale(1); }
+    9%   { opacity: 1; transform: scale(1); }
+    12%  { opacity: 0; transform: scale(1.05); }
+    100% { opacity: 0; }
+  }
+  #logo-tagline {
+    font-size: clamp(11px, 1.5vw, 18px);
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: tagline-anim var(--duration) linear forwards;
+  }
+  @keyframes tagline-anim {
+    0%   { opacity: 0; transform: translateY(10px); }
+    4%   { opacity: 1; transform: translateY(0); }
+    9%   { opacity: 1; }
+    12%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* Pulse ring */
+  #logo-ring {
+    position: absolute;
+    width: min(50%, 420px);
+    aspect-ratio: 1;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(59,91,250,0.3);
+    border-radius: 50%;
+    opacity: 0;
+    animation: ring-anim var(--duration) linear forwards;
+  }
+  @keyframes ring-anim {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+    2%   { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    9%   { opacity: 0.5; transform: translate(-50%, -50%) scale(1.08); }
+    12%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* ═══════════════════════════════════════
+     SCENES 1-5 — Feature slides
+  ═══════════════════════════════════════ */
+
+  /* Scene 1: 0:02–0:05  (11%–27% of 18s) */
+  #scene-1 { animation: s1 var(--duration) linear forwards; }
+  @keyframes s1 {
+    0%   { opacity: 0; }
+    11%  { opacity: 0; }
+    13%  { opacity: 1; }
+    26%  { opacity: 1; }
+    28%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+  #scene-1 .scene-text h2 { animation: text-rise var(--duration) linear forwards; animation-delay: 0s; }
+  #scene-1 .scene-text p  { animation: text-rise-sub var(--duration) linear forwards; }
+
+  /* Scene 2: 0:05–0:08  (27%–44%) */
+  #scene-2 { animation: s2 var(--duration) linear forwards; }
+  @keyframes s2 {
+    0%   { opacity: 0; }
+    27%  { opacity: 0; }
+    29%  { opacity: 1; }
+    43%  { opacity: 1; }
+    45%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* Scene 3: 0:08–0:11  (44%–61%) */
+  #scene-3 { animation: s3 var(--duration) linear forwards; }
+  @keyframes s3 {
+    0%   { opacity: 0; }
+    44%  { opacity: 0; }
+    46%  { opacity: 1; }
+    60%  { opacity: 1; }
+    62%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* Scene 4: 0:11–0:14  (61%–78%) */
+  #scene-4 { animation: s4 var(--duration) linear forwards; }
+  @keyframes s4 {
+    0%   { opacity: 0; }
+    61%  { opacity: 0; }
+    63%  { opacity: 1; }
+    77%  { opacity: 1; }
+    79%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* Scene 5: 0:14–0:16  (78%–89%) */
+  #scene-5 { animation: s5 var(--duration) linear forwards; }
+  @keyframes s5 {
+    0%   { opacity: 0; }
+    78%  { opacity: 0; }
+    80%  { opacity: 1; }
+    88%  { opacity: 1; }
+    90%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* ── Shared text animations ── */
+  /* Each scene's text needs scene-specific delay anchors — using a trick with
+     separate @keyframes per scene so text appears partway through each scene. */
+
+  #s1-h2 { animation: s1-h2 var(--duration) linear forwards; }
+  @keyframes s1-h2 {
+    0%,12% { opacity:0; transform: translateY(20px); }
+    15%    { opacity:1; transform: translateY(0); }
+    26%    { opacity:1; }
+    28%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+  #s1-p { animation: s1-p var(--duration) linear forwards; }
+  @keyframes s1-p {
+    0%,14% { opacity:0; transform: translateY(14px); }
+    17%    { opacity:0.85; transform: translateY(0); }
+    26%    { opacity:0.85; }
+    28%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+
+  #s2-h2 { animation: s2-h2 var(--duration) linear forwards; }
+  @keyframes s2-h2 {
+    0%,29% { opacity:0; transform: translateY(20px); }
+    32%    { opacity:1; transform: translateY(0); }
+    43%    { opacity:1; }
+    45%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+  #s2-p { animation: s2-p var(--duration) linear forwards; }
+  @keyframes s2-p {
+    0%,31% { opacity:0; transform: translateY(14px); }
+    34%    { opacity:0.85; transform: translateY(0); }
+    43%    { opacity:0.85; }
+    45%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+
+  #s3-h2 { animation: s3-h2 var(--duration) linear forwards; }
+  @keyframes s3-h2 {
+    0%,46% { opacity:0; transform: translateY(20px); }
+    49%    { opacity:1; transform: translateY(0); }
+    60%    { opacity:1; }
+    62%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+  #s3-p { animation: s3-p var(--duration) linear forwards; }
+  @keyframes s3-p {
+    0%,48% { opacity:0; transform: translateY(14px); }
+    51%    { opacity:0.85; transform: translateY(0); }
+    60%    { opacity:0.85; }
+    62%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+
+  #s4-h2 { animation: s4-h2 var(--duration) linear forwards; }
+  @keyframes s4-h2 {
+    0%,63% { opacity:0; transform: translateY(20px); }
+    66%    { opacity:1; transform: translateY(0); }
+    77%    { opacity:1; }
+    79%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+  #s4-p { animation: s4-p var(--duration) linear forwards; }
+  @keyframes s4-p {
+    0%,65% { opacity:0; transform: translateY(14px); }
+    68%    { opacity:0.85; transform: translateY(0); }
+    77%    { opacity:0.85; }
+    79%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+
+  #s5-h2 { animation: s5-h2 var(--duration) linear forwards; }
+  @keyframes s5-h2 {
+    0%,80% { opacity:0; transform: translateY(20px); }
+    83%    { opacity:1; transform: translateY(0); }
+    88%    { opacity:1; }
+    90%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+  #s5-p { animation: s5-p var(--duration) linear forwards; }
+  @keyframes s5-p {
+    0%,82% { opacity:0; transform: translateY(14px); }
+    85%    { opacity:0.85; transform: translateY(0); }
+    88%    { opacity:0.85; }
+    90%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+
+  /* ── Phone mockup slide-in ── */
+  .phone-wrap {
+    position: absolute;
+    right: 4%;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 88%;
+    display: flex; align-items: center;
+  }
+  .phone-wrap img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 60px rgba(0,0,0,0.7));
+  }
+
+  /* Image placeholders (shown when no real image) */
+  .scene-bg-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: #333; font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  /* ═══════════════════════════════════════
+     SCENE OUTRO
+  ═══════════════════════════════════════ */
+  #scene-outro {
+    background: #000;
+    animation: s-outro var(--duration) linear forwards;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+  }
+  @keyframes s-outro {
+    0%,88% { opacity: 0; }
+    90%    { opacity: 1; }
+    97%    { opacity: 1; }
+    100%   { opacity: 0; }
+  }
+  #outro-logo {
+    width: min(28%, 240px);
+    opacity: 0;
+    animation: outro-logo var(--duration) linear forwards;
+  }
+  @keyframes outro-logo {
+    0%,89% { opacity:0; transform: scale(0.9); }
+    92%    { opacity:1; transform: scale(1); }
+    97%    { opacity:1; }
+    100%   { opacity:0; }
+  }
+  #outro-tag {
+    font-size: clamp(10px, 1.3vw, 16px);
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: outro-tag var(--duration) linear forwards;
+  }
+  @keyframes outro-tag {
+    0%,91% { opacity:0; transform: translateY(8px); }
+    94%    { opacity:1; transform: translateY(0); }
+    97%    { opacity:1; }
+    100%   { opacity:0; }
+  }
+  #outro-cta {
+    font-size: clamp(9px, 1.1vw, 14px);
+    color: var(--blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0;
+    margin-top: 4px;
+    animation: outro-cta var(--duration) linear forwards;
+  }
+  @keyframes outro-cta {
+    0%,93% { opacity:0; }
+    96%    { opacity:1; }
+    97%    { opacity:1; }
+    100%   { opacity:0; }
+  }
+
+  /* ── Blue flash transition ── */
+  #flash {
+    position: absolute; inset: 0;
+    background: var(--blue);
+    opacity: 0;
+    pointer-events: none;
+    animation: flash-anim var(--duration) linear forwards;
+  }
+  @keyframes flash-anim {
+    0%,10.5% { opacity: 0; }
+    11%       { opacity: 0.18; }
+    11.5%     { opacity: 0; }
+    27%       { opacity: 0; }
+    27.5%     { opacity: 0.12; }
+    28%       { opacity: 0; }
+    44%       { opacity: 0; }
+    44.5%     { opacity: 0.12; }
+    45%       { opacity: 0; }
+    61%       { opacity: 0; }
+    61.5%     { opacity: 0.12; }
+    62%       { opacity: 0; }
+    78%       { opacity: 0; }
+    78.5%     { opacity: 0.12; }
+    79%       { opacity: 0; }
+    100%      { opacity: 0; }
+  }
+
+  /* ── Progress bar ── */
+  #progress {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: var(--blue);
+    width: 0%;
+    opacity: 0;
+    animation: progress-bar var(--duration) linear forwards;
+    box-shadow: 0 0 8px var(--blue);
+  }
+  @keyframes progress-bar {
+    0%   { opacity: 1; width: 0%; }
+    100% { opacity: 1; width: 100%; }
+  }
+
+  /* ── Time display ── */
+  #timer {
+    position: absolute;
+    top: 12px; right: 16px;
+    font-size: clamp(9px, 1vw, 13px);
+    color: rgba(255,255,255,0.35);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <button onclick="restart()">▶ 再生 / リスタート</button>
+  <button onclick="pauseResume()" id="pause-btn">⏸ 一時停止</button>
+  <span>18秒 | 16:9 | 1280×720相当</span>
+</div>
+
+<div id="stage-wrapper">
+  <div id="stage">
+
+    <!-- SCENE 0: Logo Intro -->
+    <div class="scene" id="scene-logo">
+      <div class="dots-bg"></div>
+      <div id="logo-ring"></div>
+      <div id="logo-main">
+        <!-- Replace src with your logo path -->
+        <img id="logo-img" src="images/logo.png"
+             onerror="this.style.display='none'; document.getElementById('logo-text-fallback').style.display='block';"
+             alt="FLOSET">
+        <div id="logo-text-fallback" style="display:none; color:#3B5BFA; font-size:clamp(32px,6vw,80px); font-weight:900; letter-spacing:4px; animation: logo-img-anim var(--duration) linear forwards;">FLOSET</div>
+        <div id="logo-tagline">音楽と服をつなぐ</div>
+      </div>
+      <div class="accent-circle" style="width:60%;aspect-ratio:1;bottom:-20%;right:-15%;"></div>
+    </div>
+
+    <!-- SCENE 1: 好きな音楽を登録するだけ -->
+    <div class="scene" id="scene-1">
+      <div class="scene-bg" style="background-image: url('images/screen1.png'); background-color:#0d0d1a;"></div>
+      <div class="scene-overlay"></div>
+      <div class="scene-text">
+        <h2 id="s1-h2">好きな音楽を<br>登録するだけ。</h2>
+        <p id="s1-p">アーティスト名や音楽ジャンルを選んで、<br>あなたの感性をセット</p>
+      </div>
+    </div>
+
+    <!-- SCENE 2: 似た感性の人が好む服をレコメンド -->
+    <div class="scene" id="scene-2">
+      <div class="scene-bg" style="background-image: url('images/screen2.png'); background-color:#0a0a14;"></div>
+      <div class="scene-overlay"></div>
+      <div class="scene-text">
+        <h2 id="s2-h2">似た感性の人が<br>好む服を<br>レコメンド。</h2>
+        <p id="s2-p">音楽タグをもとに、ファン層の<br>ファッション傾向を分析して提案</p>
+      </div>
+    </div>
+
+    <!-- SCENE 3: 音楽ジャンルから服を探せる -->
+    <div class="scene" id="scene-3">
+      <div class="scene-bg" style="background-image: url('images/screen3.png'); background-color:#070714;"></div>
+      <div class="scene-overlay"></div>
+      <div class="scene-text">
+        <h2 id="s3-h2">音楽ジャンルから、<br>服を探せる。</h2>
+        <p id="s3-p">J-POP、ROCK、K-POPなど、<br>気分に合うアイテムをピンポイントにdig</p>
+      </div>
+    </div>
+
+    <!-- SCENE 4: 服から音楽コミュニティが見えてくる -->
+    <div class="scene" id="scene-4">
+      <div class="scene-bg" style="background-image: url('images/screen4.png'); background-color:#06060f;"></div>
+      <div class="scene-overlay"></div>
+      <div class="scene-text">
+        <h2 id="s4-h2">服から、<br>音楽コミュニティが<br>見えてくる。</h2>
+        <p id="s4-p">BIBIRUした服の傾向から、<br>近い感性のアーティストやコミュニティに出会える</p>
+      </div>
+    </div>
+
+    <!-- SCENE 5: 気に入ったらそのまま購入 -->
+    <div class="scene" id="scene-5">
+      <div class="scene-bg" style="background-image: url('images/screen5.png'); background-color:#05050d;"></div>
+      <div class="scene-overlay"></div>
+      <div class="scene-text">
+        <h2 id="s5-h2">気に入ったら、<br>そのまま購入。</h2>
+        <p id="s5-p">商品詳細からスムーズに<br>購入ページへ進めます</p>
+      </div>
+    </div>
+
+    <!-- SCENE OUTRO -->
+    <div class="scene" id="scene-outro">
+      <div class="dots-bg"></div>
+      <img id="outro-logo" src="images/logo.png"
+           onerror="this.style.display='none'; document.getElementById('outro-text-fallback').style.display='block';"
+           alt="FLOSET">
+      <div id="outro-text-fallback" style="display:none; color:#3B5BFA; font-size:clamp(24px,5vw,64px); font-weight:900; letter-spacing:4px; animation: outro-logo var(--duration) linear forwards;">FLOSET</div>
+      <div id="outro-tag">音楽と服をつなぐ、新しいアプリ</div>
+      <div id="outro-cta">App Store / Google Play にて近日公開</div>
+      <div class="accent-circle" style="width:50%;aspect-ratio:1;top:-10%;left:-15%;"></div>
+    </div>
+
+    <!-- Blue flash overlay (transitions) -->
+    <div id="flash"></div>
+
+    <!-- Progress bar -->
+    <div id="progress"></div>
+
+    <!-- Timer -->
+    <div id="timer">0:00</div>
+
+  </div><!-- #stage -->
+</div><!-- #stage-wrapper -->
+
+<script>
+  let startTime = null;
+  let paused = false;
+  let pauseStart = null;
+  let totalPaused = 0;
+  let rafId = null;
+  const DURATION = 18000; // ms
+
+  function getAnimatables() {
+    return document.querySelectorAll(
+      '#scene-logo, #logo-img, #logo-tagline, #logo-ring,' +
+      '#scene-1, #scene-2, #scene-3, #scene-4, #scene-5,' +
+      '#s1-h2, #s1-p, #s2-h2, #s2-p, #s3-h2, #s3-p,' +
+      '#s4-h2, #s4-p, #s5-h2, #s5-p,' +
+      '#scene-outro, #outro-logo, #outro-tag, #outro-cta,' +
+      '#flash, #progress'
+    );
+  }
+
+  function restart() {
+    paused = false;
+    totalPaused = 0;
+    pauseStart = null;
+    document.getElementById('pause-btn').textContent = '⏸ 一時停止';
+    cancelAnimationFrame(rafId);
+
+    getAnimatables().forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetWidth; // reflow
+      el.style.animation = '';
+    });
+
+    startTime = performance.now();
+    tick();
+  }
+
+  function pauseResume() {
+    if (!startTime) { restart(); return; }
+    if (!paused) {
+      paused = true;
+      pauseStart = performance.now();
+      getAnimatables().forEach(el => el.style.animationPlayState = 'paused');
+      document.getElementById('pause-btn').textContent = '▶ 再開';
+    } else {
+      paused = false;
+      totalPaused += performance.now() - pauseStart;
+      getAnimatables().forEach(el => el.style.animationPlayState = 'running');
+      document.getElementById('pause-btn').textContent = '⏸ 一時停止';
+      tick();
+    }
+  }
+
+  function tick() {
+    if (paused) return;
+    const elapsed = performance.now() - startTime - totalPaused;
+    const secs = Math.min(elapsed / 1000, 18);
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60).toString().padStart(2, '0');
+    document.getElementById('timer').textContent = `${m}:${s}`;
+    if (elapsed < DURATION + 500) {
+      rafId = requestAnimationFrame(tick);
+    }
+  }
+
+  // Auto-start on load
+  window.addEventListener('load', () => { setTimeout(restart, 400); });
+</script>
+
+</body>
+</html>

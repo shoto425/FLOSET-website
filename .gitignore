@@ -1,6 +1,6 @@
-# dependencies
+# root package manager artifacts (Next.js app lives in floset-app/)
+package-lock.json
 node_modules/
-floset-app/node_modules/
 
 # next.js
 floset-app/.next/
@@ -29,3 +29,4 @@ yarn-error.log*
 # source image duplicates (not used in site)
 差し込み①/
 .vercel
+.env*

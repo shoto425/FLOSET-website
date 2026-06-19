@@ -5,79 +5,16 @@ import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel"
-
-export interface NewsItem {
-  id: string
-  category: "EVENT" | "RELEASE" | "UPDATE" | "INFO"
-  date: string
-  title: string
-  description: string
-  href: string
-  bgColor: string
-  logoColor: string
-}
+import { getNewsCarouselItems, type NewsArticle } from "@/lib/news-data"
 
 const LOGO_MASK_URL = "/images/floset-logo-blue.png"
 
-export interface NewsGalleryProps {
-  items?: NewsItem[]
-}
-
-const CATEGORY_COLORS: Record<NewsItem["category"], string> = {
-  EVENT:   "#e85f0a",
+const CATEGORY_COLORS: Record<NewsArticle["category"], string> = {
+  EVENT: "#e85f0a",
   RELEASE: "#0536f4",
-  UPDATE:  "#0aa436",
-  INFO:    "#6c3fc7",
+  UPDATE: "#0aa436",
+  INFO: "#6c3fc7",
 }
-
-const COMING_SOON_COPY = {
-  title: "準備中",
-  description: "最新のお知らせを準備しています。",
-  date: "—",
-} as const
-
-const defaultItems: NewsItem[] = [
-  {
-    id: "news-event-01",
-    category: "EVENT",
-    date: COMING_SOON_COPY.date,
-    title: COMING_SOON_COPY.title,
-    description: COMING_SOON_COPY.description,
-    href: "#",
-    bgColor: "#C8FF00",
-    logoColor: "#5B0FFF",
-  },
-  {
-    id: "news-release-01",
-    category: "RELEASE",
-    date: COMING_SOON_COPY.date,
-    title: COMING_SOON_COPY.title,
-    description: COMING_SOON_COPY.description,
-    href: "#",
-    bgColor: "#FF2D8A",
-    logoColor: "#00F5FF",
-  },
-  {
-    id: "news-update-01",
-    category: "UPDATE",
-    date: COMING_SOON_COPY.date,
-    title: COMING_SOON_COPY.title,
-    description: COMING_SOON_COPY.description,
-    href: "#",
-    bgColor: "#E8D5FF",
-    logoColor: "#1A0533",
-  },
-  {
-    id: "news-info-01",
-    category: "INFO",
-    date: COMING_SOON_COPY.date,
-    title: COMING_SOON_COPY.title,
-    description: COMING_SOON_COPY.description,
-    href: "#",
-    bgColor: "#FF5500",
-    logoColor: "#FFF8E7",
-  },
-]
 
 const FlosetLogoMark = ({ color }: { color: string }) => (
   <div
@@ -98,7 +35,7 @@ const FlosetLogoMark = ({ color }: { color: string }) => (
   />
 )
 
-const CategoryBadge = ({ category }: { category: NewsItem["category"] }) => (
+const CategoryBadge = ({ category }: { category: NewsArticle["category"] }) => (
   <span
     style={{ background: CATEGORY_COLORS[category] }}
     className="inline-block rounded-full px-2.5 py-0.5 text-[9px] font-black tracking-[.14em] uppercase text-white leading-none"
@@ -107,7 +44,85 @@ const CategoryBadge = ({ category }: { category: NewsItem["category"] }) => (
   </span>
 )
 
-const NewsGallery = ({ items = defaultItems }: NewsGalleryProps) => {
+const NewsCard = ({ item }: { item: NewsArticle }) => {
+  const cardInner = (
+    <div
+      className="relative h-full min-h-[26rem] max-w-full overflow-hidden rounded-2xl md:aspect-[5/4] lg:aspect-[4/3]"
+      style={{ background: item.bgColor }}
+    >
+      <div className="absolute inset-x-0 top-0 z-10 flex h-[58%] items-center justify-center overflow-hidden">
+        {item.imageUrl ? (
+          <img
+            src={item.imageUrl}
+            alt={item.title}
+            className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <FlosetLogoMark color={item.logoColor} />
+        )}
+      </div>
+      <div className="absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-start p-6 md:p-7">
+        <div className="mb-2 flex items-center gap-2">
+          <CategoryBadge category={item.category} />
+          <span
+            className="text-[11px] font-semibold tracking-[.06em]"
+            style={{ color: "rgba(255,255,255,.45)", fontFamily: "Archivo, sans-serif" }}
+          >
+            {item.date}
+          </span>
+        </div>
+        <p
+          className="mb-3 text-lg font-extrabold leading-snug md:text-xl"
+          style={{
+            color: "rgba(255,255,255,.95)",
+            fontFamily: "Archivo, sans-serif",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          {item.title}
+        </p>
+        <p
+          className="mb-6 line-clamp-3 text-[13px] leading-relaxed"
+          style={{ color: "rgba(255,255,255,.45)", fontFamily: "Noto Sans JP, sans-serif" }}
+        >
+          {item.description}
+        </p>
+        <div
+          className="flex items-center gap-2 text-[12px] font-bold tracking-[.1em] uppercase transition-all duration-300 group-hover:gap-3"
+          style={{ color: "rgba(255,255,255,.6)", fontFamily: "Archivo, sans-serif" }}
+        >
+          {item.published ? (
+            <>
+              詳細を見る
+              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </>
+          ) : (
+            "Coming Soon"
+          )}
+        </div>
+      </div>
+    </div>
+  )
+
+  if (item.published) {
+    return (
+      <a
+        href={`/news/${item.slug}`}
+        target="_top"
+        rel="noopener noreferrer"
+        className="group block rounded-2xl"
+      >
+        {cardInner}
+      </a>
+    )
+  }
+
+  return <div className="group block rounded-2xl">{cardInner}</div>
+}
+
+const NewsGallery = () => {
+  const items = getNewsCarouselItems()
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)
@@ -122,12 +137,13 @@ const NewsGallery = ({ items = defaultItems }: NewsGalleryProps) => {
     }
     update()
     carouselApi.on("select", update)
-    return () => { carouselApi.off("select", update) }
+    return () => {
+      carouselApi.off("select", update)
+    }
   }, [carouselApi])
 
   return (
     <section className="pt-10 pb-12" style={{ background: "#dfd6cc" }}>
-      {/* header row */}
       <div className="mx-auto mb-8 flex items-end justify-between px-6 md:px-12 lg:px-16 max-w-[1180px]">
         <div className="flex flex-col gap-3">
           <p
@@ -170,7 +186,6 @@ const NewsGallery = ({ items = defaultItems }: NewsGalleryProps) => {
         </div>
       </div>
 
-      {/* carousel */}
       <div className="w-full">
         <Carousel
           setApi={setCarouselApi}
@@ -184,58 +199,12 @@ const NewsGallery = ({ items = defaultItems }: NewsGalleryProps) => {
                 key={item.id}
                 className="max-w-[300px] pl-[20px] md:max-w-[340px] lg:max-w-[380px]"
               >
-                <div className="group block rounded-2xl">
-                  <div
-                    className="relative h-full min-h-[26rem] max-w-full overflow-hidden rounded-2xl md:aspect-[5/4] lg:aspect-[4/3]"
-                    style={{ background: item.bgColor }}
-                  >
-                    <div className="absolute inset-x-0 top-0 z-10 flex h-[58%] items-center justify-center">
-                      <FlosetLogoMark color={item.logoColor} />
-                    </div>
-                    {/* gradient overlay — lower half only so logo stays visible */}
-                    <div className="absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
-                    {/* content */}
-                    <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-start p-6 md:p-7">
-                      <div className="mb-2 flex items-center gap-2">
-                        <CategoryBadge category={item.category} />
-                        <span
-                          className="text-[11px] font-semibold tracking-[.06em]"
-                          style={{ color: "rgba(255,255,255,.45)", fontFamily: "Archivo, sans-serif" }}
-                        >
-                          {item.date}
-                        </span>
-                      </div>
-                      <p
-                        className="mb-3 text-lg font-extrabold leading-snug md:text-xl"
-                        style={{
-                          color: "rgba(255,255,255,.95)",
-                          fontFamily: "Archivo, sans-serif",
-                          letterSpacing: "-0.01em",
-                        }}
-                      >
-                        {item.title}
-                      </p>
-                      <p
-                        className="mb-6 line-clamp-2 text-[13px] leading-relaxed"
-                        style={{ color: "rgba(255,255,255,.45)", fontFamily: "Noto Sans JP, sans-serif" }}
-                      >
-                        {item.description}
-                      </p>
-                      <p
-                        className="text-[12px] font-bold tracking-[.12em] uppercase"
-                        style={{ color: "rgba(255,255,255,.45)", fontFamily: "Archivo, sans-serif" }}
-                      >
-                        Coming Soon
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <NewsCard item={item} />
               </CarouselItem>
             ))}
           </CarouselContent>
         </Carousel>
 
-        {/* dot pagination */}
         <div className="mt-8 flex justify-center gap-2">
           {items.map((_, index) => (
             <button
