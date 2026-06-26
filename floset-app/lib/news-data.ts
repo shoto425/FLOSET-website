@@ -64,46 +64,117 @@ export const NEWS_ARTICLES: NewsArticle[] = [
       ],
     },
   },
+  {
+    id: "tongali-mitsui-fudosan-2026",
+    slug: "tongali-mitsui-fudosan-2026",
+    category: "INFO",
+    date: "2026.06.20",
+    title: "Tongali ビジネスプランコンテスト2026にて三井不動産賞を受賞しました",
+    description:
+      "FLOSETは、2026年6月20日に開催された「Tongali ビジネスプランコンテスト2026」において、三井不動産賞を受賞しました。",
+    imageUrl: "/images/news/tongali-mitsui-fudosan-2026.png",
+    bgColor: "#1a1410",
+    logoColor: "#ffffff",
+    published: true,
+    body: {
+      lead: [
+        "FLOSETは、2026年6月20日に開催された「Tongali ビジネスプランコンテスト2026」において、三井不動産賞を受賞しました。",
+        "FLOSETは、「音楽から、服と出会う。」をコンセプトに、好きな音楽やカルチャーを起点として、自分らしい服と出会える新しい体験をつくるアプリです。",
+      ],
+      closing: [
+        "今回の受賞を励みに、音楽・服・人が自然に混ざり合うカルチャーを、デジタルとリアルの両方で広げていきます。",
+        "日頃より応援・ご協力いただいている皆さまに、心より感謝申し上げます。",
+        "これからのFLOSETにも、ぜひご期待ください。",
+      ],
+      sections: [
+        {
+          heading: "受賞概要",
+          items: [
+            { label: "イベント名", value: "Tongali ビジネスプランコンテスト2026" },
+            { label: "受賞", value: "三井不動産賞" },
+            { label: "開催日", value: "2026年6月20日" },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "staps-station-ai-2026",
+    slug: "staps-station-ai-2026",
+    category: "INFO",
+    date: "2026.03.15",
+    title: "STAPS 2026にてSTATION Ai賞を受賞しました",
+    description:
+      "FLOSETは、2026年3月15日（日）に開催された、STATION Ai主催の学生起業家・スタートアップ育成プログラム「STAPS 2026」において、STATION Ai賞を受賞しました。",
+    imageUrl: "/images/news/staps-station-ai-2026.png",
+    bgColor: "#0a2540",
+    logoColor: "#ffffff",
+    published: true,
+    body: {
+      lead: [
+        "FLOSETは、2026年3月15日（日）に開催された、STATION Ai主催の学生起業家・スタートアップ育成プログラム「STAPS 2026」において、STATION Ai賞を受賞しました。",
+        "FLOSETは、「音楽から、服と出会う。」をコンセプトに、好きな音楽やカルチャーを起点として、自分らしい一着と出会えるファッション探索アプリです。",
+        "プログラム期間中は、事業アイデアの壁打ちやユーザー検証を重ね、届けたいユーザー像をより具体化してきました。その結果、アプリ経由で購入ページへ遷移したユーザーのうち、4.3%が購入に至る実証結果を得ることができました。",
+      ],
+      closing: [
+        "今回の受賞により、STATION Aiへの入居をはじめ、CatapultおよびPITCH&MEETUPへの登壇機会をいただきました。",
+        "この機会を力に変え、音楽・服・人が自然に混ざり合い、新しいカルチャーが生まれる場として、FLOSETをより多くの人へ届けていきます。",
+        "日頃より応援・ご協力いただいている皆さまに、心より感謝申し上げます。",
+        "これからのFLOSETにも、ぜひご期待ください。",
+      ],
+      sections: [
+        {
+          heading: "受賞概要",
+          items: [
+            { label: "プログラム名", value: "STAPS 2026（STATION Ai Program for Students）" },
+            { label: "主催", value: "STATION Ai" },
+            { label: "受賞", value: "STATION Ai賞" },
+            { label: "開催日", value: "2026年3月15日（日）" },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "100-program-grand-prize-2026",
+    slug: "100-program-grand-prize-2026",
+    category: "INFO",
+    date: "2026.03.29",
+    title: "東京大学発「100 Program」最終発表にて最優秀賞を受賞しました",
+    description:
+      "FLOSETは、2026年3月29日（日）に行われた、学生のプロダクト開発を支援する「100 Program」最終発表において、最優秀賞を受賞しました。",
+    imageUrl: "/images/news/100-program-grand-prize-2026.png",
+    bgColor: "#1a1535",
+    logoColor: "#ff6b35",
+    published: true,
+    body: {
+      lead: [
+        "FLOSETは、2026年3月29日（日）に行われた、学生のプロダクト開発を支援する「100 Program」最終発表において、最優秀賞を受賞しました。",
+        "受賞したプロジェクトは、「音楽から、服と出会うアプリ」です。",
+        "FLOSETは、「音楽から、服と出会う。」をコンセプトに、好きな音楽やカルチャーを起点として、自分らしい一着と出会えるファッション探索アプリです。",
+        "アイデアを形にすることから始まり、チームでの開発と検証を重ねるなかで、音楽とファッションをつなぐ新しい体験の可能性を提案しました。",
+      ],
+      closing: [
+        "今回の受賞を励みに、音楽・服・人が自然に混ざり合い、新しいカルチャーが生まれる場として、FLOSETをより多くの人へ届けていきます。",
+        "日頃より応援・ご協力いただいている皆さまに、心より感謝申し上げます。",
+        "これからのFLOSETにも、ぜひご期待ください。",
+      ],
+      sections: [
+        {
+          heading: "受賞概要",
+          items: [
+            { label: "プログラム名", value: "100 Program" },
+            { label: "主催", value: "東京大学発" },
+            { label: "受賞", value: "最優秀賞" },
+            { label: "開催日", value: "2026年3月29日（日）" },
+          ],
+        },
+      ],
+    },
+  },
 ]
 
-const COMING_SOON_PLACEHOLDERS: NewsArticle[] = [
-  {
-    id: "news-release-01",
-    slug: "release-01",
-    category: "RELEASE",
-    date: "—",
-    title: "準備中",
-    description: "最新のお知らせを準備しています。",
-    bgColor: "#FF2D8A",
-    logoColor: "#00F5FF",
-    published: false,
-    body: { lead: [] },
-  },
-  {
-    id: "news-update-01",
-    slug: "update-01",
-    category: "UPDATE",
-    date: "—",
-    title: "準備中",
-    description: "最新のお知らせを準備しています。",
-    bgColor: "#E8D5FF",
-    logoColor: "#1A0533",
-    published: false,
-    body: { lead: [] },
-  },
-  {
-    id: "news-info-01",
-    slug: "info-01",
-    category: "INFO",
-    date: "—",
-    title: "準備中",
-    description: "最新のお知らせを準備しています。",
-    bgColor: "#FF5500",
-    logoColor: "#FFF8E7",
-    published: false,
-    body: { lead: [] },
-  },
-]
+const COMING_SOON_PLACEHOLDERS: NewsArticle[] = []
 
 export function getNewsArticle(slug: string) {
   return NEWS_ARTICLES.find((article) => article.slug === slug)
