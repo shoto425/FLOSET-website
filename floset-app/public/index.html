@@ -181,13 +181,12 @@ button.btn-black-cta {
 }
 .waitlist-modal__panel {
   position: relative; z-index: 1;
-  width: min(100%, 520px);
-  max-height: min(92vh, 760px);
+  width: min(100%, 480px);
+  max-height: min(92vh, 720px);
   background: #fff;
   border-radius: 20px;
-  overflow: hidden;
+  overflow: auto;
   box-shadow: 0 24px 64px rgba(20, 17, 15, .28);
-  display: flex; flex-direction: column;
 }
 .waitlist-modal__close {
   position: absolute; top: 10px; right: 10px; z-index: 2;
@@ -196,14 +195,44 @@ button.btn-black-cta {
   font-size: 24px; line-height: 1; cursor: pointer;
 }
 .waitlist-modal__close:hover { background: rgba(20, 17, 15, .14); }
-.waitlist-modal__loading {
-  padding: 48px 24px; text-align: center;
-  font-family: var(--jp); font-size: 15px; color: #3a3733;
+.waitlist-modal__body {
+  padding: clamp(32px, 6vw, 44px) clamp(24px, 5vw, 36px) clamp(28px, 5vw, 36px);
 }
-.waitlist-modal__frame {
-  width: 100%; height: min(92vh, 760px);
-  border: none; display: block; background: #fff;
+.waitlist-modal__title {
+  font-family: var(--display); font-weight: 900; font-style: italic;
+  font-size: clamp(28px, 5vw, 36px); line-height: 1.15;
+  letter-spacing: -.02em; color: #14110f; margin-bottom: 16px;
 }
+.waitlist-modal__lead,
+.waitlist-modal__note {
+  font-family: var(--jp); font-size: 14px; line-height: 1.85; color: #3a3733;
+}
+.waitlist-modal__lead { margin-bottom: 8px; }
+.waitlist-modal__note { margin-top: 14px; font-size: 12px; color: #8a8178; }
+.waitlist-modal__form { margin-top: 24px; display: grid; gap: 12px; }
+.waitlist-modal__input {
+  width: 100%; padding: 14px 16px; border: 1px solid #e6ddd0;
+  border-radius: 12px; font-family: var(--jp); font-size: 16px;
+  color: #14110f; background: #fff;
+}
+.waitlist-modal__input:focus {
+  outline: 2px solid rgba(10, 164, 54, .35); border-color: var(--green);
+}
+.waitlist-modal__submit {
+  width: 100%; padding: 16px 20px; border: none; border-radius: 12px;
+  background: var(--green); color: #fff; font-family: var(--jp);
+  font-weight: 700; font-size: 16px; cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+.waitlist-modal__submit:hover { background: var(--green-dark); transform: translateY(-1px); }
+.waitlist-modal__submit:disabled { opacity: .65; cursor: wait; transform: none; }
+.waitlist-modal__status {
+  min-height: 1.4em; font-family: var(--jp); font-size: 13px; line-height: 1.6;
+}
+.waitlist-modal__status.is-error { color: #c0392b; }
+.waitlist-modal__status.is-success { color: var(--green); }
+.waitlist-modal__recaptcha { min-height: 0; overflow: hidden; }
+.waitlist-modal .grecaptcha-badge { visibility: hidden !important; }
 body.waitlist-open { overflow: hidden; }
 
 @media (max-width: 640px) {
@@ -212,7 +241,6 @@ body.waitlist-open { overflow: hidden; }
     width: 100%; max-height: 94vh;
     border-radius: 20px 20px 0 0;
   }
-  .waitlist-modal__frame { height: 94vh; }
 }
 
 /* ============================================================
@@ -1196,12 +1224,21 @@ ml('enablePopups', false);
   </div>
 </section>
 
-<div id="waitlist-modal" class="waitlist-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="ウェイティングリスト登録">
+<div id="waitlist-modal" class="waitlist-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="waitlist-title">
   <div class="waitlist-modal__backdrop" data-close></div>
   <div class="waitlist-modal__panel">
     <button type="button" class="waitlist-modal__close" data-close aria-label="閉じる">&times;</button>
-    <p class="waitlist-modal__loading">読み込み中…</p>
-    <iframe class="waitlist-modal__frame" title="FLOSETウェイティングリスト" hidden></iframe>
+    <div class="waitlist-modal__body">
+      <h2 id="waitlist-title" class="waitlist-modal__title">FLOSETを最初に使う。</h2>
+      <p class="waitlist-modal__lead">FLOSETは現在、App Store公開に向けて準備中です。<br>公開時に、いち早くお知らせします。</p>
+      <form id="waitlist-form" class="waitlist-modal__form" novalidate>
+        <input class="waitlist-modal__input" type="email" name="email" autocomplete="email" placeholder="Email" required>
+        <div id="waitlist-recaptcha" class="waitlist-modal__recaptcha" aria-hidden="true"></div>
+        <button type="submit" class="waitlist-modal__submit">リリース通知を受け取る</button>
+        <p class="waitlist-modal__status" id="waitlist-status" aria-live="polite"></p>
+      </form>
+      <p class="waitlist-modal__note">※App Store公開・FLOSETに関するお知らせを受け取ることに同意します。</p>
+    </div>
   </div>
 </div>
 
