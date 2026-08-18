@@ -24,6 +24,41 @@ export interface NewsArticle {
 
 export const NEWS_ARTICLES: NewsArticle[] = [
   {
+    id: "floset-nagoya-meetup-2026",
+    slug: "floset-nagoya-meetup-2026",
+    category: "EVENT",
+    date: "2026.08.18",
+    title: "「音楽から、服と人に出会う夜。」FLOSET体験会＆交流会を開催します",
+    description:
+      "2026年8月18日（火）、名古屋・久屋大通のソイソースマンションにて、FLOSETの体験会＆交流会を開催します。音楽やファッション、古着が好きな方も、FLOSETを初めて知った方も大歓迎です。",
+    imageUrl: "/images/news/floset-nagoya-meetup-2026.png",
+    bgColor: "#1a1028",
+    logoColor: "#0aa436",
+    published: true,
+    body: {
+      lead: [
+        "2026年8月18日（火）、名古屋・久屋大通のソイソースマンションにて、FLOSETの体験会＆交流会を開催します。",
+        "当日は、「好きな音楽から服と出会えるアプリ・FLOSET」が生まれた背景や目指している世界についてご紹介します。実際にFLOSETを体験していただいた後は、音楽やファッション、古着などをテーマに、参加者同士で気軽に交流できる時間を設けます。",
+        "音楽や服が好きな方はもちろん、FLOSETを初めて知った方も大歓迎です。ぜひお気軽にご参加ください。",
+      ],
+      closing: [
+        "イベントの詳細・お申し込みは、Peatixイベントページ（https://soysauce0818.peatix.com/?utm_campaign=ptx-home&utm_source=web_home&utm_medium=ptx-web&pf=pf-web-home3&m_id=513&pos=1）をご覧ください。",
+      ],
+      sections: [
+        {
+          heading: "開催概要",
+          items: [
+            { label: "日時", value: "2026年8月18日（火）19:00〜21:00" },
+            { label: "会場", value: "ソイソースマンション803" },
+            { label: "住所", value: "愛知県名古屋市中区丸の内3丁目5-34 セントラルコーポ803" },
+            { label: "参加費", value: "1,000円" },
+            { label: "持ち物", value: "スマートフォン" },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "kozarocks-2026",
     slug: "kozarocks-2026",
     category: "EVENT",

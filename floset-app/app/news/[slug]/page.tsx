@@ -1,9 +1,57 @@
 import { notFound } from "next/navigation"
+import type { ReactNode } from "react"
 
 import { getNewsArticle } from "@/lib/news-data"
 
 type NewsDetailPageProps = {
   params: Promise<{ slug: string }>
+}
+
+function renderParagraphWithLinks(text: string): ReactNode {
+  const peatixMatch = text.match(/Peatixイベントページ（(https?:\/\/[^）]+)）/)
+  if (peatixMatch) {
+    const [fullMatch, url] = peatixMatch
+    const [before, after] = text.split(fullMatch)
+    return (
+      <>
+        {before}
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "#0536f4", fontWeight: 600, textDecoration: "underline" }}
+        >
+          Peatixイベントページ
+        </a>
+        {after}
+      </>
+    )
+  }
+
+  const urlRegex = /(https?:\/\/[^\s）)]+)/g
+  const parts: ReactNode[] = []
+  let lastIndex = 0
+  for (const match of text.matchAll(urlRegex)) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index))
+    }
+    parts.push(
+      <a
+        key={match.index}
+        href={match[0]}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: "#0536f4", wordBreak: "break-all", textDecoration: "underline" }}
+      >
+        {match[0]}
+      </a>,
+    )
+    lastIndex = match.index + match[0].length
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex))
+  }
+  return parts.length > 0 ? parts : text
 }
 
 export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
@@ -157,7 +205,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
           >
             {article.body.closing.map((paragraph, index) => (
               <p key={paragraph} style={{ marginTop: index === 0 ? 0 : "1.5em" }}>
-                {paragraph}
+                {renderParagraphWithLinks(paragraph)}
               </p>
             ))}
           </section>
